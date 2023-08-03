@@ -11,3 +11,19 @@ applications:
       JBP_CONFIG_COMPONENTS: "jres: ['com.sap.xs.java.buildpack.jdk.SAPMachineJDK']"
     services:
     - javauaa
+
+  - name: web
+    random-route: true
+    path: web
+    memory: 1024M
+    env:
+      destinations: >
+        [
+          {
+            "name":"helloworld",
+            "url":"https://helloworld-bright-vicuna-xm.cfapps.us10-001.hana.ondemand.com/",
+            "forwardAuthToken": true
+          }
+        ]
+    services:
+      - javauaa
