@@ -1,7 +1,6 @@
 {
   "name": "web",
   "version": "1.0.0",
-  "description": "",
   "main": "index.js",
   "scripts": {
     "start": "node node_modules/@sap/approuter/approuter.js"
@@ -10,5 +9,6 @@
   "license": "ISC",
   "dependencies": {
     "@sap/approuter": "^14.3.0"
-  }
+  },
+  "description": ""
 }
