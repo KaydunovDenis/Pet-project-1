@@ -1,7 +1,9 @@
----
 applications:
+# Application
   - name: helloworld
-    random-route: true
+#    random-route: true
+    routes:
+      - route: helloworld-app.cfapps.us10-001.hana.ondemand.com
     path: ./target/java-tutorial-0.0.1-SNAPSHOT.jar
     memory: 1024M
     buildpacks:
@@ -10,20 +12,25 @@ applications:
       TARGET_RUNTIME: tomcat
       JBP_CONFIG_COMPONENTS: "jres: ['com.sap.xs.java.buildpack.jdk.SAPMachineJDK']"
     services:
-    - javauaa
+    - xsuaa-service
+    - saas-registry
 
-  - name: web
-    random-route: true
-    path: web
+# Application Router
+  - name: approuter
+    #random-route: true
+    routes:
+      - route: approuter-helloworld.cfapps.us10-001.hana.ondemand.com
+    path: approuter
     memory: 1024M
+    services:
+      - xsuaa-service
     env:
       destinations: >
         [
           {
             "name":"helloworld",
-            "url":"https://helloworld-bright-vicuna-xm.cfapps.us10-001.hana.ondemand.com/",
+            "url":"https://helloworld-app.cfapps.us10-001.hana.ondemand.com/",
             "forwardAuthToken": true
           }
         ]
-    services:
-      - javauaa
+      TENANT_HOST_PATTERN: "^(.*)-approuter-helloworld.cfapps.us10-001.hana.ondemand.com"
