@@ -1,23 +1,23 @@
 applications:
 # Application
   - name: helloworld
-#    random-route: true
+# random-route: true is  unnecessary more
     routes:
       - route: helloworld-app.cfapps.us10-001.hana.ondemand.com
     path: ./target/java-tutorial-0.0.1-SNAPSHOT.jar
     memory: 1024M
     buildpacks:
       - sap_java_buildpack
+    services:
+      - xsuaa-service
+      - saas-registry-instance
     env:
       TARGET_RUNTIME: tomcat
       JBP_CONFIG_COMPONENTS: "jres: ['com.sap.xs.java.buildpack.jdk.SAPMachineJDK']"
-    services:
-    - xsuaa-service
-    - saas-registry
 
 # Application Router
   - name: approuter
-    #random-route: true
+# random-route: true is  unnecessary more
     routes:
       - route: approuter-helloworld.cfapps.us10-001.hana.ondemand.com
     path: approuter
