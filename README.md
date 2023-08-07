@@ -7,7 +7,14 @@ Simple Java application by using cf CLI via Spring Boot.
 your web application.
 
 ### Add XSUAA authorisation service:
-> cf create-service xsuaa application javauaa -c xs-security.json
+> cf create-service xsuaa application xsuaa-service -c xs-security.json  
+> cf unbind-service 'application' xsuaa-service 
+> cf delete-service 'xsuaa-service'
+
+Where:  
+- 'xsuaa-service' is name of xsuaa service in SAP BTP  
+- 'application' is an application name
+
 
 ### Build project:  
 1. In 'web' run commands which will create package.json and add approuter service:
@@ -40,4 +47,23 @@ Read values from the environment variable of the application:
 - - Client Secret = xsuaa[0].credentials.clientsecret
 - - Scope = xsuaa[0].credentials.xsappname + ".admin"
 
-[Add Multi-tenancy](https://developers.sap.com/tutorials/cp-cf-security-xsuaa-multi-tenant.html)
+
+### [Add Multi-tenancy](https://developers.sap.com/tutorials/cp-cf-security-xsuaa-multi-tenant.html)
+### Add SaaS Provisioning service
+Create config.json is a configuration file for SaaS Provisioning service
+```
+{
+  "xsappname":"helloworld",
+  "appUrls": {
+    "onSubscription" : "https://helloworld-ap25.cfapps.eu10.hana.ondemand.com/callback/v1.0/tenants/{tenantId}"
+  },
+  "displayName" : "Helloworld MTA",
+  "description" : "Helloworld MTA sample application",
+  "category" : "Custom SaaS Applications"
+}
+```
+Create the SaaS Provisioning service instance with the config.json file:  
+> cf create-service saas-registry application saas-registry-instance -c config.json
+
+Create a route for a consumer subaccount:  
+> cf map-route 'approuter_name' cfapps.eu10.hana.ondemand.com --hostname 'subaccount_subdomain'-'first_part_of_approuter_rout'
