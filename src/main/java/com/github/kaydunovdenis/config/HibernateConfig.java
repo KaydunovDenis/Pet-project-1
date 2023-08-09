@@ -28,7 +28,7 @@ public class HibernateConfig {
                                                                      CurrentTenantIdentifierResolver tenantIdentifierResolver) {
     final LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
     em.setDataSource(dataSource);
-    em.setPackagesToScan("com.github.kaydunovdenis.models");
+    em.setPackagesToScan("com.github.kaydunovdenis.model");
     em.setJpaVendorAdapter(this.jpaVendorAdapter());
 
     final Map<String, Object> jpaProperties = new HashMap<>();
