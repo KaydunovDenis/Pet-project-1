@@ -1,6 +1,6 @@
-package com.example.javatutorial.controller;
+package com.github.kaydunovdenis.controller;
 
-import com.example.javatutorial.exception.NotAuthorizedException;
+import com.github.kaydunovdenis.exception.NotAuthorizedException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

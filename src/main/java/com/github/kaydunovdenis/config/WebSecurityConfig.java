@@ -1,4 +1,4 @@
-package com.example.javatutorial.congig;
+package com.github.kaydunovdenis.config;
 
 import com.sap.cloud.security.xsuaa.XsuaaServiceConfiguration;
 import com.sap.cloud.security.xsuaa.token.TokenAuthenticationConverter;

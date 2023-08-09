@@ -1,4 +1,4 @@
-package com.example.javatutorial;
+package com.github.kaydunovdenis;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

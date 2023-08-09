@@ -1,4 +1,4 @@
-package com.example.javatutorial.exception;
+package com.github.kaydunovdenis.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;

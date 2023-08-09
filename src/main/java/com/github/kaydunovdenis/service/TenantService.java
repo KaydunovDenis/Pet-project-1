@@ -1,4 +1,4 @@
-package com.example.javatutorial.service;
+package com.github.kaydunovdenis.service;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
