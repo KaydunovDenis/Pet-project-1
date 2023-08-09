@@ -1,7 +1,6 @@
 applications:
 # Application
   - name: helloworld
-# random-route: true is  unnecessary more
     routes:
       - route: helloworld-app.cfapps.us10-001.hana.ondemand.com
     path: ./target/java-tutorial-0.0.1-SNAPSHOT.jar
@@ -17,7 +16,6 @@ applications:
 
 # Application Router
   - name: approuter
-# random-route: true is  unnecessary more
     routes:
       - route: approuter-helloworld.cfapps.us10-001.hana.ondemand.com
     path: approuter
