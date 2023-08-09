@@ -1,18 +1,20 @@
-package com.example.javatutorial.controller;
+package com.github.kaydunovdenis.controller;
 
-import com.example.javatutorial.service.TenantService;
+import com.github.kaydunovdenis.service.TenantService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping(path = "api/v1/callback/tenant")
-public class CallbackController {
+@RequestMapping(path = "callback/v1.0/tenants")
+public class TenantCallbackController {
 
+  private static final String APP_ROUTER_DOMAIN_NAME = "-approuter-helloworld.cfapps.us10-001.hana.ondemand.com";
+  private static final String HTTPS = "https://";
   private final TenantService tenantService;
 
   @Autowired
-  public CallbackController(TenantService tenantService) {
+  public TenantCallbackController(TenantService tenantService) {
     this.tenantService = tenantService;
   }
 
@@ -28,9 +30,11 @@ public class CallbackController {
     return ResponseEntity.ok(generateTenantURL(tenantId));
   }
 
-  private String generateTenantURL(String tenantId) {
+
+  //todo subdomen
+   private String generateTenantURL(String tenantId) {
     //todo replace on variable for "approuter-helloworld.cfapps.us10-001.hana.ondemand.com"
-    return "https://" + tenantId + "-approuter-helloworld.cfapps.us10-001.hana.ondemand.com";
+    return HTTPS + tenantId + APP_ROUTER_DOMAIN_NAME;
   }
 
 }
