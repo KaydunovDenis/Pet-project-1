@@ -1,5 +1,3 @@
-# pet_project_1
-
 ### [Create an Application with SAP Java Buildpack](https://developers.sap.com/tutorials/btp-cf-buildpacks-java-create.html)   
 Simple Java application by using cf CLI via Spring Boot.
 - This simple app will be invoked through a web microservice (application router).
@@ -34,7 +32,7 @@ Where:
 
 ### [Using Postman for API Testing with XSUAA](https://blogs.sap.com/2020/03/02/using-postman-for-api-testing-with-xsuaa/)  
 Read values from the environment variable of the application:
->cf env app_name
+> cf env app_name
 
 - open Postman
 - create Get request
@@ -67,3 +65,10 @@ Create the SaaS Provisioning service instance with the config.json file:
 
 Create a route for a consumer subaccount:  
 > cf map-route 'approuter_name' cfapps.eu10.hana.ondemand.com --hostname 'subaccount_subdomain'-'first_part_of_approuter_rout'
+
+
+### Additional resources
+
+###Why???   
+in application.yml:
+multitenant: defaultTenant: public
