@@ -16,7 +16,7 @@
     <description>Multitenant BTP java application by using XSUAA service for authentication</description>
 
     <properties>
-        <java.version>1.8</java.version>
+        <java.version>11</java.version>
         <s4hana.version>2.28.0</s4hana.version>
         <springframework.cloud.version>1.2.3.RELEASE</springframework.cloud.version>
     </properties>
@@ -108,6 +108,43 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
+
+        <!--Dependency for plugin Sapient AI: https://github.com/Sapient-AI/docs#mockito-libraries-->
+            <!-- Junit 5-->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <version>5.9.2</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.platform</groupId>
+            <artifactId>junit-platform-launcher</artifactId>
+            <version>1.9.2</version>
+            <scope>test</scope>
+        </dependency>
+            <!--Mockito-->
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <version>5.2.0</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-inline</artifactId>
+            <version>5.2.0</version>
+            <scope>test</scope>
+        </dependency>
+        <!-- byte-buddy is an optional dependency. Mockito brings it, but an old version can cause problems.
+          We need at least 1.12.9 -->
+        <dependency>
+            <groupId>net.bytebuddy</groupId>
+            <artifactId>byte-buddy</artifactId>
+            <version>1.14.4</version>
+            <scope>test</scope>
+        </dependency>
+
 
         <dependency>
             <groupId>org.projectlombok</groupId>

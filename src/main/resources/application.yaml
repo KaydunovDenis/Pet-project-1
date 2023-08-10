@@ -11,9 +11,9 @@ spring:
  #Database
   datasource:
     driver-class-name: org.postgresql.Driver
-    username: ${vcap.services.books-postgres-db.credentials.username}
-    password: ${vcap.services.books-postgres-db.credentials.password}
-    url: jdbc:postgresql://${vcap.services.books-postgres-db.credentials.hostname}:${vcap.services.books-postgres-db.credentials.port}/${vcap.services.books-postgres-db.credentials.dbname}
+    username: ${vcap.services.postgres-instance.credentials.username}
+    password: ${vcap.services.postgres-instance.credentials.password}
+    url: jdbc:postgresql://${vcap.services.postgres-instance.credentials.hostname}:${vcap.services.postgres-instance.credentials.port}/${vcap.services.postgres-instance.credentials.dbname}
   #Jackson
   jackson:
     default-property-inclusion: non_null
