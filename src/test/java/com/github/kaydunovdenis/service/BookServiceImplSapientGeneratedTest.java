@@ -7,10 +7,12 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import com.github.kaydunovdenis.dto.BookDto;
 import com.github.kaydunovdenis.entity.BookEntity;
 import com.github.kaydunovdenis.repository.BookRepository;
+import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.test.context.ActiveProfiles;
@@ -21,14 +23,20 @@ class BookServiceImplSapientGeneratedTest {
   //Sapient generated method id: ${76c10304-bef0-3980-80be-1586e1f562c3}
   @Test()
   void getAllBooksTest() {
-    /** TODO: Help needed! Please adjust the input/test parameter values manually to satisfy the requirements of the given test scenario.*  The test code, including the assertion statements, has been successfully generated.*/
+    //given
     BookRepository bookRepositoryMock = mock(BookRepository.class);
     BookServiceImpl target = new BookServiceImpl(bookRepositoryMock);
-    Iterable iterableMock = mock(Iterable.class);
-    doReturn(iterableMock).when(bookRepositoryMock).findAll();
+    List<BookEntity> bookEntities = new ArrayList<>();
+    bookEntities.add(getBookEntity("name1"));
+    bookEntities.add(getBookEntity("name2"));
+
+    //when
+    when(bookRepositoryMock.findAll()).thenReturn(bookEntities);
+
+    //then
     List<BookEntity> result = target.getAllBooks();
     assertAll("result", () -> {
-      assertThat(result.size(), equalTo(0));
+      assertThat(result.size(), equalTo(2));
       verify(bookRepositoryMock).findAll();
     });
   }
@@ -39,7 +47,7 @@ class BookServiceImplSapientGeneratedTest {
     BookRepository bookRepositoryMock = mock(BookRepository.class);
     BookServiceImpl target = new BookServiceImpl(bookRepositoryMock);
     BookEntity bookEntity = new BookEntity();
-    doReturn(bookEntity).when(bookRepositoryMock).save((BookEntity) any());
+    doReturn(bookEntity).when(bookRepositoryMock).save(any());
     BookDto bookDto = new BookDto();
     bookDto.setAuthor("author1");
     bookDto.setPrice(0);
@@ -47,8 +55,16 @@ class BookServiceImplSapientGeneratedTest {
     BookEntity result = target.create(bookDto);
     assertAll("result", () -> {
       assertThat(result, equalTo(bookEntity));
-      verify(bookRepositoryMock).save((BookEntity) any());
+      verify(bookRepositoryMock).save(any());
     });
+  }
+
+  private BookEntity getBookEntity(String name) {
+    BookEntity bookEntity = new BookEntity();
+    bookEntity.setName(name);
+    bookEntity.setAuthor("author1");
+    bookEntity.setPrice(100);
+    return bookEntity;
   }
 
 
