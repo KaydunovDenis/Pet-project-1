@@ -20,7 +20,6 @@ import java.time.LocalDateTime;
 @Setter
 @Entity
 @NoArgsConstructor
-@AllArgsConstructor
 @Table(name = "report")
 public class Report {
 
@@ -44,4 +43,9 @@ public class Report {
   @Column(name = "description")
   private String description;
 
+  public Report(Project project, Employee employee, String description) {
+    this.project = project;
+    this.employee = employee;
+    this.description = description;
+  }
 }
