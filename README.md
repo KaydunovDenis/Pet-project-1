@@ -66,6 +66,8 @@ Create the SaaS Provisioning service instance with the config.json file:
 Create a route for a consumer subaccount:  
 > cf map-route 'approuter_name' cfapps.eu10.hana.ondemand.com --hostname 'subaccount_subdomain'-'first_part_of_approuter_rout'
 
+Logging in SAP BTP:
+> cf logs 'application' --recent
 
 ### Additional resources
 [Deep Dive 6 with SAP Cloud SDK: Extend your Cloud Foundry Application with Tenant-Aware Persistency](https://blogs.sap.com/2017/12/20/deep-dive-6-with-sap-s4hana-cloud-sdk-extend-your-cloud-foundry-application-with-tenant-aware-persistency/)
