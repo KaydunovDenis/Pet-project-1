@@ -1,0 +1,32 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: yourname
+      validCheckSum:
+        - ANY
+      changes:
+        - createTable:
+            tableName: book
+            columns:
+              - column:
+                  name: id
+                  type: serial
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: VARCHAR(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: author
+                  type: VARCHAR(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: price
+                  type: INT
+                  constraints:
+                    nullable: false
