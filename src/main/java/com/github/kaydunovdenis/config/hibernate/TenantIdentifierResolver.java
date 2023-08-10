@@ -1,4 +1,4 @@
-package com.github.kaydunovdenis.config;
+package com.github.kaydunovdenis.config.hibernate;
 
 import com.sap.cloud.sdk.cloudplatform.tenant.exception.TenantAccessException;
 import com.sap.cloud.sdk.cloudplatform.tenant.exception.TenantNotAvailableException;

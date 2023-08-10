@@ -1,4 +1,4 @@
-package com.github.kaydunovdenis.config;
+package com.github.kaydunovdenis.config.hibernate;
 
 import com.github.kaydunovdenis.util.TenantUtil;
 import org.hibernate.HibernateException;

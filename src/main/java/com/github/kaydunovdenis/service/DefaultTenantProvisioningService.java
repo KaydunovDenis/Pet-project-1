@@ -9,6 +9,7 @@ import liquibase.database.DatabaseFactory;
 import liquibase.database.jvm.JdbcConnection;
 import liquibase.exception.LiquibaseException;
 import liquibase.resource.ClassLoaderResourceAccessor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.Validate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,16 +23,18 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.regex.Pattern;
 
+@Slf4j
 @Service
 public class DefaultTenantProvisioningService implements TenantProvisioningService {
 
   public static final String LIQUIBASE_PATH = "db/changelog/db.changelog-master.yaml";
-  @Autowired
-  private DataSource dataSource;
+  private final DataSource dataSource;
 
   private static final Pattern TENANT_PATTERN = Pattern.compile("[-\\w]+");
 
-  private static final Logger logger = LoggerFactory.getLogger(DefaultTenantProvisioningService.class);
+  public DefaultTenantProvisioningService(@Autowired DataSource dataSource) {
+    this.dataSource = dataSource;
+  }
 
   @Override
   public void subscribeTenant(final String tenantId) {
@@ -58,7 +61,7 @@ public class DefaultTenantProvisioningService implements TenantProvisioningServi
       }
 
     } catch (SQLException | LiquibaseException | IllegalArgumentException e) {
-      logger.error("Tenant subscription failed for {}.", tenantId, e);
+      log.error("Tenant subscription failed for {}.", tenantId, e);
       throw new BadRequestException();
     }
   }
@@ -73,7 +76,7 @@ public class DefaultTenantProvisioningService implements TenantProvisioningServi
         statement.execute(String.format("DROP SCHEMA IF EXISTS \"%s\" CASCADE", schemaName));
       }
     } catch (SQLException | IllegalArgumentException e) {
-      logger.error("Tenant unsubscription failed for {}.", tenantId, e);
+      log.error("Tenant unsubscription failed for {}.", tenantId, e);
       throw new BadRequestException();
     }
   }
