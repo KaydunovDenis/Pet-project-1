@@ -9,11 +9,11 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
-    <groupId>com.example</groupId>
-    <artifactId>java-tutorial</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
-    <name>HelloWorld</name>
-    <description>A simple Multi tenant java application by using XSUAA service for authentication</description>
+    <groupId>com.github.kaydunovdenis</groupId>
+    <artifactId>btpapp</artifactId>
+    <version>1.0</version>
+    <name>btpapp</name>
+    <description>Multitenant BTP java application by using XSUAA service for authentication</description>
 
     <properties>
         <java.version>1.8</java.version>
@@ -118,6 +118,14 @@
             <groupId>javax</groupId>
             <artifactId>javaee-api</artifactId>
             <version>8.0.1</version>
+        </dependency>
+        <dependency>
+            <groupId>com.querydsl</groupId>
+            <artifactId>querydsl-apt</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.querydsl</groupId>
+            <artifactId>querydsl-jpa</artifactId>
         </dependency>
     </dependencies>
 
