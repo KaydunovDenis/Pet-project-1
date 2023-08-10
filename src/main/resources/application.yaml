@@ -6,6 +6,19 @@ spring:
         dialect: org.hibernate.dialect.PostgreSQLDialect
     hibernate:
       ddl-auto: update
+    datasource:
+      url: jdbc:postgresql://localhost:5432/DB_helloworld
+      username: username
+      password: password
 
 multitenant:
   defaultTenant: public
+
+logging:
+  level:
+    com.github.com.github.kaydunovdenis: DEBUG
+    com.sap.cloud.sdk: INFO
+    root: WARN
+
+server:
+  port: 8080
