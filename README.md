@@ -68,7 +68,8 @@ Create a route for a consumer subaccount:
 
 
 ### Additional resources
+[Deep Dive 6 with SAP Cloud SDK: Extend your Cloud Foundry Application with Tenant-Aware Persistency](https://blogs.sap.com/2017/12/20/deep-dive-6-with-sap-s4hana-cloud-sdk-extend-your-cloud-foundry-application-with-tenant-aware-persistency/)
 
-###Why???   
-in application.yml:
-multitenant: defaultTenant: public
+TODO:
+tenantId vs subdoman?
+Alexandr where  is your dependencies for QueryDSL?
