@@ -12,9 +12,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
 @RestController
-@RequestMapping(path = "callback/v1.0/tenants")
+@RequestMapping(path = "/callback/v1.0/tenants")
 public class TenantProvisioningController {
-
   private static final String APP_ROUTER_DOMAIN_NAME = "-approuter-helloworld.cfapps.us10-001.hana.ondemand.com";
   private static final String HTTPS = "https://";
 

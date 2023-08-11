@@ -164,6 +164,13 @@
             <groupId>com.querydsl</groupId>
             <artifactId>querydsl-jpa</artifactId>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/net.bytebuddy/byte-buddy-dep -->
+        <dependency>
+            <groupId>net.bytebuddy</groupId>
+            <artifactId>byte-buddy-dep</artifactId>
+            <version>1.14.5</version>
+        </dependency>
+
     </dependencies>
 
 
