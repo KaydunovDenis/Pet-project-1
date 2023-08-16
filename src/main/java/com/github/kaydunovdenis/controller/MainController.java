@@ -11,8 +11,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import com.sap.cloud.security.xsuaa.token.Token;
 
 @RestController
-@RequestMapping(path = "")
-
+@RequestMapping(path = "/helloworld")
 public class MainController {
 
   @GetMapping(path = "")
@@ -20,7 +19,7 @@ public class MainController {
     if (!token.getAuthorities().contains(new SimpleGrantedAuthority("Display"))) {
       throw new NotAuthorizedException("This operation requires \"Display\" scope");
     }
-    return new ResponseEntity<>("Hello World!", HttpStatus.OK);
+    return new ResponseEntity<>("Hello Denis Kaydunov!", HttpStatus.OK);
   }
 
 }

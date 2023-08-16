@@ -55,7 +55,7 @@ class MainControllerSapientGeneratedTest {
     doReturn(collection).when(tokenMock).getAuthorities();
     MainController target = new MainController();
     ResponseEntity<String> result = target.readAll(tokenMock);
-    ResponseEntity<String> responseEntity = new ResponseEntity<>("Hello World!", HttpStatus.OK);
+    ResponseEntity<String> responseEntity = new ResponseEntity<>("Hello Denis Kaydunov!", HttpStatus.OK);
     assertAll("result", () -> {
       assertThat(result, equalTo(responseEntity));
       verify(tokenMock).getAuthorities();
