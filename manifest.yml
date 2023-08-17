@@ -1,8 +1,8 @@
 applications:
 # Application
-  - name: helloworld
+  - name: sbtp
     routes:
-      - route: helloworld-app.cfapps.us10-001.hana.ondemand.com
+      - route: sbtp-app-rout.cfapps.us10-001.hana.ondemand.com
     path: ./target/btpapp-1.0.jar
     memory: 1024M
     buildpacks:
@@ -29,8 +29,8 @@ applications:
       destinations: >
         [
           {
-            "name":"helloworld",
-            "url":"https://helloworld-app.cfapps.us10-001.hana.ondemand.com/",
+            "name":"sbtp",
+            "url":"https://sbtp-app-rout.cfapps.us10-001.hana.ondemand.com/",
             "forwardAuthToken": true
           }
         ]

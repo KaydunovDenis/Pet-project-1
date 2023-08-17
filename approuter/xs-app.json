@@ -1,9 +1,9 @@
 {
   "routes": [
     {
-      "source": "^/helloworld/(.*)$",
+      "source": "^/sbtp/(.*)$",
       "target": "$1",
-      "destination": "helloworld"
+      "destination": "sbtp"
     }
   ]
 }

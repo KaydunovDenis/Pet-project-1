@@ -1,5 +1,5 @@
 {
-  "xsappname" : "helloworld",
+  "xsappname" : "sbtp",
   "tenant-mode" : "shared",
   "scopes": [
     {
