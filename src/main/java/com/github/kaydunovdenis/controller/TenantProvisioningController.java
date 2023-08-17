@@ -3,6 +3,7 @@ package com.github.kaydunovdenis.controller;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.github.kaydunovdenis.service.TenantProvisioningService;
 import java.sql.SQLException;
+import liquibase.exception.LiquibaseException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -33,7 +34,8 @@ public class TenantProvisioningController {
 
   @PutMapping("/{tenantId}")
   public ResponseEntity<String> subscribeTenant(@RequestBody JsonNode requestBody,
-                                                @PathVariable(value = "tenantId") String tenantId) {
+                                                @PathVariable(value = "tenantId") String tenantId)
+      throws SQLException, LiquibaseException {
 
     log.info("Tenant callback service was called with method PUT for tenant {}.", tenantId);
     String subscribedSubdomain = requestBody.get("subscribedSubdomain").asText();
