@@ -6,7 +6,7 @@ your web application.
 
 ### Add XSUAA authorisation service:
 > cf create-service xsuaa application xsuaa-service -c xs-security.json  
-> cf unbind-service 'application' xsuaa-service 
+> cf unbind-service 'app_name' xsuaa-service 
 > cf delete-service 'xsuaa-service'
 
 Where:  
@@ -46,37 +46,20 @@ Read values from the environment variable of the application:
 - - Scope = xsuaa[0].credentials.xsappname + ".admin"
 
 
-### [Add Multi-tenancy](https://developers.sap.com/tutorials/cp-cf-security-xsuaa-multi-tenant.html)
-### Add SaaS Provisioning service
-Create config.json is a configuration file for SaaS Provisioning service
-```
-{
-  "xsappname":"helloworld",
-  "appUrls": {
-    "onSubscription" : "https://helloworld-ap25.cfapps.eu10.hana.ondemand.com/callback/v1.0/tenants/{tenantId}"
-  },
-  "displayName" : "Helloworld MTA",
-  "description" : "Helloworld MTA sample application",
-  "category" : "Custom SaaS Applications"
-}
-```
-Create the SaaS Provisioning service instance with the config.json file:  
-> cf create-service saas-registry application saas-registry-instance -c config.json
-
-Create a route for a consumer subaccount:  
-> cf map-route 'approuter_name' cfapps.eu10.hana.ondemand.com --hostname 'subaccount_subdomain'-'first_part_of_approuter_rout'
 
 Useful commands:
 > cf logs <app name>
 > cf logs <app name> --recent //show logs from SAP BTP  
 > cf marketplace //show available services  
 > cf marketplace -s postgresql //show info about one service  
+> cf events <app name> //show events
 > cf create-service postgresql v9.6-dev postgres
 > cf bind-service <app name> <postgres-instance> //connect two services
 
 > cf services //show services in your dev spase
 > ![img.png](img.png)  
 > cf apps //show downloaded apps
+> cf app <app name> //show statistics
 
 ### Add log service from SAP BTP
 > cf marketplace  
@@ -85,7 +68,17 @@ Useful commands:
 > cf bind-service 'appname' 'myapplogs'  
 > cf restage 'appname'  
 
+### Persistence 
+[Deep Dive 6 with SAP Cloud SDK: Extend your Cloud Foundry Application with Tenant-Aware Persistency](https://blogs.sap.com/2017/12/20/deep-dive-6-with-sap-s4hana-cloud-sdk-extend-your-cloud-foundry-application-with-tenant-aware-persistency/)
+> cf create-service postgresql-db trial postgres-instance
+> cf bind-service APP_NAME postgres-instance
+> cf restage APP_NAME //update application
 
+
+where:
+  * postgresql-db <- name from: cf marketplace  
+  * trial <- your plan in BTP Cockpit
+  * postgres-instance <- name of your new instance 'postgresql-db'
 
 ### [Connect to database running on Cloud Foundry locally through ssh:](https://docs.cloudfoundry.org/devguide/deploy-apps/ssh-services.html#ssh-tunnel)
 <details><summary> Expand </summary>
@@ -100,18 +93,40 @@ Useful commands:
 > cf service-key <service_instance_name_in_BTP> <my_new_key_name>
 
 4. Open SSH connection:
-> cf ssh -L <local_port>:<service_url>:<service_port> <app_name>
-> like:
-> cf ssh -L 63306:postgres-874206b5-a0c6-4b34-ba2f-cb1da9cfe5b1.cqryblsdrbcs.us-east-1.rds.amazonaws.com:3481 helloworld
+> cf ssh -L <local_port>:<service_hostname>:<service_port> <app_name>  
+> like:  
+> cf ssh -L 63306:postgres-ade9561e-2985-4c20-b601-097eee32029a.cqryblsdrbcs.us-east-1.rds.amazonaws.com:4605 sbtp  
 
 * <local_port> is available local port for port forwarding. For example, 63306
-* <service_url> is the address provided under hostname in the service key retrieved earlier.  
+* <service_hostname> is the address provided under hostname in the service key retrieved earlier.  
 * <service_port> is the port provided under port.  
 * <app_name> is the name of your app in SAP BTP.  
 
-   5 Access your service instance from Intelij Idea
+5. Access your service instance from Intelij Idea
    ![img_2.png](img_2.png)
 </details>
+
+
+### [Add Multi-tenancy](https://developers.sap.com/tutorials/cp-cf-security-xsuaa-multi-tenant.html)
+1. Add SaaS Provisioning service
+Create config.json is a configuration file for SaaS Provisioning service
+```
+{
+  "xsappname":"helloworld",
+  "appUrls": {
+    "onSubscription" : "https://helloworld-ap25.cfapps.eu10.hana.ondemand.com/callback/v1.0/tenants/{tenantId}"
+  },
+  "displayName" : "Helloworld MTA",
+  "description" : "Helloworld MTA sample application",
+  "category" : "Custom SaaS Applications"
+}
+```
+Create the SaaS Provisioning service instance with the config.json file:
+> cf create-service saas-registry application saas-registry-instance -c config.json
+
+2. Create a route for a consumer subaccount:
+> cf map-route 'approuter_name' cfapps.us10-001.hana.ondemand.com --hostname 'subaccount_subdomain'-'first_part_of_approuter_rout'
+
 
 ### [Debug an Application Running on SapMachine:](https://help.sap.com/docs/btp/sap-business-technology-platform/debug-java-web-application-running-on-sapmachine)
 <details><summary> Expand </summary>
@@ -133,7 +148,9 @@ env:
 > ps aux  
 > exit
 6. Start the debug process. Replace $JAVA_PID on your number, and <app_name>:
-> cf ssh <app_name> -c "export JAVA_PID=`ps java pid=` && app/META-INF/.sap_java_buildpack/sap_machine_jdk/bin/jcmd <JAVA_PID> VM.start_java_debugging"
+> cf ssh sbtp -c "export JAVA_PID=`ps java pid=` && app/META-INF/.sap_java_buildpack/sap_machine_jdk/bin/jcmd $JAVA_PID VM.start_java_debugging"  
+
+![img_3.png](img_3.png)
 
 7. Open SSH connection to debug process:
 > cf ssh -N -T -L 8000:localhost:8000 <app_name>
@@ -146,8 +163,7 @@ env:
 ### Additional resources:
 1. [Fundamentals of Multitenancy in SAP BTP](https://blogs.sap.com/2022/08/27/fundamentals-of-multitenancy-in-sap-btp/)
 2. [Guide to Developing Cloud Applications with SAP Cloud Platform and Cloud Foundry](https://habr.com/ru/companies/sap/articles/350690/)
-3. [Deep Dive 6 with SAP Cloud SDK: Extend your Cloud Foundry Application with Tenant-Aware Persistency](https://blogs.sap.com/2017/12/20/deep-dive-6-with-sap-s4hana-cloud-sdk-extend-your-cloud-foundry-application-with-tenant-aware-persistency/)
-4. [Remote Debugging on Cloud Foundry](https://blogs.sap.com/2019/07/24/remote-debugging-on-cloud-foundry/)
+3. [Remote Debugging on Cloud Foundry](https://blogs.sap.com/2019/07/24/remote-debugging-on-cloud-foundry/)
 
 
 
