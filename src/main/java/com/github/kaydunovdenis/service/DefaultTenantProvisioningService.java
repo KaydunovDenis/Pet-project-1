@@ -1,6 +1,12 @@
 package com.github.kaydunovdenis.service;
 
+import com.github.kaydunovdenis.config.hibernate.SchemaPerTenantConnectionProvider;
 import com.github.kaydunovdenis.util.TenantUtil;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.Objects;
+import java.util.regex.Pattern;
 import liquibase.Contexts;
 import liquibase.LabelExpression;
 import liquibase.Liquibase;
@@ -14,13 +20,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.Validate;
 import org.springframework.stereotype.Service;
 
-import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.Objects;
-import java.util.regex.Pattern;
-
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -28,7 +27,7 @@ public class DefaultTenantProvisioningService implements TenantProvisioningServi
   public static final String LIQUIBASE_PATH = "db/changelog/db.changelog-master.yaml";
   private static final Pattern TENANT_PATTERN = Pattern.compile("[-\\w]+");
 
-  private final DataSource dataSource;
+  private final SchemaPerTenantConnectionProvider provider;
 
 
   public void subscribeTenant(final String tenantId) throws SQLException, LiquibaseException {
@@ -37,7 +36,7 @@ public class DefaultTenantProvisioningService implements TenantProvisioningServi
       Validate.isTrue(isValidTenantId(tenantId), String.format("Invalid tenant id: \"%s\"", tenantId));
       String schemaName = TenantUtil.createSchemaName(tenantId);
 
-      Connection connection = dataSource.getConnection();
+      Connection connection = provider.getAnyConnection();
 //            Database database = DatabaseFactory.getInstance().findCorrectDatabaseImplementation(new JdbcConnection(connection));
       try (Statement statement = connection.createStatement()) {
         statement.execute(String.format("CREATE SCHEMA IF NOT EXISTS \"%s\"", schemaName));
@@ -62,7 +61,7 @@ public class DefaultTenantProvisioningService implements TenantProvisioningServi
 //                database.setDefaultSchemaName(defaultSchemaName);
       }
 
-      runLiquibaseScript(dataSource.getConnection(), schemaName);
+      runLiquibaseScript(provider.getConnection(tenantId));
 
     } catch (Exception e) {
       log.error("TenantProvisioningService: Tenant subscription failed for {}.", tenantId, e);
@@ -70,17 +69,16 @@ public class DefaultTenantProvisioningService implements TenantProvisioningServi
     }
   }
 
-  private void runLiquibaseScript(Connection connection, String schemaName) {
+  private void runLiquibaseScript(Connection connection) {
     try {
-      connection.setSchema(schemaName);
       Database database = DatabaseFactory.getInstance().findCorrectDatabaseImplementation(new JdbcConnection(connection));
       Liquibase liquibase = new Liquibase(LIQUIBASE_PATH, new ClassLoaderResourceAccessor(), database);
       liquibase.update(new Contexts(), new LabelExpression());
-      log.info("Initial script for schema: {} was performed successfully", schemaName);
+      log.info("Initial script for schema: {} was performed successfully", connection.getSchema());
 
       connection.commit();
       connection.close();
-    } catch (Exception e) {
+    } catch (SQLException | LiquibaseException e) {
       throw new RuntimeException(e);
     }
   }
@@ -89,7 +87,7 @@ public class DefaultTenantProvisioningService implements TenantProvisioningServi
     try {
       Validate.isTrue(isValidTenantId(tenantId), String.format("Invalid tenant id: \"%s\"", tenantId));
       final String schemaName = TenantUtil.createSchemaName(tenantId);
-      final Connection connection = dataSource.getConnection();
+      final Connection connection = provider.getAnyConnection();
       try (Statement statement = connection.createStatement()) {
         statement.execute(String.format("DROP SCHEMA IF EXISTS \"%s\" CASCADE", schemaName));
       }
