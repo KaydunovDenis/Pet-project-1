@@ -72,19 +72,8 @@
 
         <!-- SDK framework adaptions -->
         <dependency>
-            <groupId>com.sap.cloud.s4hana.frameworks</groupId>
-            <artifactId>cxf</artifactId>
-            <version>${s4hana.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.sap.cloud.s4hana</groupId>
-            <artifactId>s4hana-all</artifactId>
-            <version>${s4hana.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.sap.cloud.s4hana.cloudplatform</groupId>
+            <groupId>com.sap.cloud.sdk.cloudplatform</groupId>
             <artifactId>scp-cf</artifactId>
-            <version>${s4hana.version}</version>
         </dependency>
 
         <!-- Liquibase for database migration -->
@@ -173,6 +162,17 @@
 
     </dependencies>
 
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>com.sap.cloud.sdk</groupId>
+                <artifactId>sdk-bom</artifactId>
+                <version>4.20.0</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
     <build>
         <plugins>
