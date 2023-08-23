@@ -1,3 +1,17 @@
+# spring-boot-mutlitenancy-app
+
+## Description
+This is a test project about implementing Java backend microservices on SAP BTP Cloud
+Foundry Platform.
+
+## Project details
+
+* [Guide to developing cloud applications using SAP Cloud Platform and Cloud Foundry.](https://habr.com/ru/companies/sap/articles/350690/)
+* Spring-Boot Crud operations
+* Deployment on Cloud Foundry (SAP BTP)
+* O-Auth 2.0 protocol (XSUAA service)
+* SaaS multi-tenant application (Schema isolation), saas-registry service
+
 ### [Create an Application with SAP Java Buildpack](https://developers.sap.com/tutorials/btp-cf-buildpacks-java-create.html)   
 Simple Java application by using cf CLI via Spring Boot.
 - This simple app will be invoked through a web microservice (application router).
@@ -27,7 +41,8 @@ Where:
 > cf api https://api.cf.eu20.hana.ondemand.com  
 > cf login or cf login --sso  
 
-2. Deploy java application on SAP BTP Cloud Foundry:  
+2. Deploy java application on SAP BTP Cloud Foundry: 
+> mvn clean install
 > cf push  
 
 ### [Using Postman for API Testing with XSUAA](https://blogs.sap.com/2020/03/02/using-postman-for-api-testing-with-xsuaa/)  
@@ -71,11 +86,11 @@ Useful commands:
 ### Persistence 
 [Deep Dive 6 with SAP Cloud SDK: Extend your Cloud Foundry Application with Tenant-Aware Persistency](https://blogs.sap.com/2017/12/20/deep-dive-6-with-sap-s4hana-cloud-sdk-extend-your-cloud-foundry-application-with-tenant-aware-persistency/)
 > cf create-service postgresql-db trial postgres-instance
-> cf bind-service APP_NAME postgres-instance
-> cf restage APP_NAME //update application
-
+> cf bind-service sbtp postgres-instance //if you write it in manifest then ut will be automatically
+> cf restage sbtp
 
 where:
+  * sbtp is APP_NAME in BTP CLoud Foundry
   * postgresql-db <- name from: cf marketplace  
   * trial <- your plan in BTP Cockpit
   * postgres-instance <- name of your new instance 'postgresql-db'
@@ -84,7 +99,7 @@ where:
 <details><summary> Expand </summary>
 
 1. Activate SSH for your app:
-> cf enable-ssh <app_name>
+> cf enable-ssh sbtp
 
 2. Create a service key for your service instance using the cf create-service-key command:
 > cf create-service-key <service_instance_name_in_BTP> <my_new_key_name>
