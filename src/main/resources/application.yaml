@@ -17,6 +17,8 @@ spring:
   #Jackson
   jackson:
     default-property-inclusion: non_null
+  liquibase:
+    change-log: classpath:changelog/db.changelog-master.yaml
 
 multitenant:
   defaultTenant: public
