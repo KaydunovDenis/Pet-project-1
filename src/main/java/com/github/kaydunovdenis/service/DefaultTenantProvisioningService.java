@@ -26,7 +26,7 @@ import org.springframework.stereotype.Service;
 public class DefaultTenantProvisioningService implements TenantProvisioningService {
 
   @Value("${spring.liquibase.change-log}")
-  public static String LIQUIBASE_PATH;
+  public static String liquibasePath;
   private static final Pattern TENANT_PATTERN = Pattern.compile("[-\\w]+");
   private final SchemaPerTenantConnectionProvider provider;
 
@@ -54,8 +54,8 @@ public class DefaultTenantProvisioningService implements TenantProvisioningServi
 
   private void runLiquibaseScript(Connection connection) throws LiquibaseException, SQLException {
     Database database = DatabaseFactory.getInstance().findCorrectDatabaseImplementation(new JdbcConnection(connection));
-    Liquibase liquibase = new Liquibase(LIQUIBASE_PATH, new ClassLoaderResourceAccessor(), database);
-    liquibase.update(new Contexts(), new LabelExpression());
+    Liquibase liquibase = new Liquibase(liquibasePath, new ClassLoaderResourceAccessor(), database);
+    liquibase.update(new Contexts());
     log.info("Initial script for schema: {} was performed successfully", connection.getSchema());
     connection.commit();
   }
