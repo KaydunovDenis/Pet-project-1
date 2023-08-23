@@ -15,72 +15,49 @@ import liquibase.database.DatabaseFactory;
 import liquibase.database.jvm.JdbcConnection;
 import liquibase.exception.LiquibaseException;
 import liquibase.resource.ClassLoaderResourceAccessor;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.Validate;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Slf4j
 @Service
-@RequiredArgsConstructor
 public class DefaultTenantProvisioningService implements TenantProvisioningService {
-  public static final String LIQUIBASE_PATH = "db/changelog/db.changelog-master.yaml";
-  private static final Pattern TENANT_PATTERN = Pattern.compile("[-\\w]+");
 
+  @Value("${spring.liquibase.change-log}")
+  public static String LIQUIBASE_PATH;
+  private static final Pattern TENANT_PATTERN = Pattern.compile("[-\\w]+");
   private final SchemaPerTenantConnectionProvider provider;
 
+  @Autowired
+  public DefaultTenantProvisioningService(SchemaPerTenantConnectionProvider provider) {
+    this.provider = provider;
+  }
 
   public void subscribeTenant(final String tenantId) throws SQLException, LiquibaseException {
-    String defaultSchemaName;
-    try {
-      Validate.isTrue(isValidTenantId(tenantId), String.format("Invalid tenant id: \"%s\"", tenantId));
-      String schemaName = TenantUtil.createSchemaName(tenantId);
+    Validate.isTrue(isValidTenantId(tenantId), String.format("Invalid tenant id: \"%s\"", tenantId));
+    String schemaName = TenantUtil.createSchemaName(tenantId);
 
-      Connection connection = provider.getAnyConnection();
-//            Database database = DatabaseFactory.getInstance().findCorrectDatabaseImplementation(new JdbcConnection(connection));
-      try (Statement statement = connection.createStatement()) {
-        statement.execute(String.format("CREATE SCHEMA IF NOT EXISTS \"%s\"", schemaName));
-        log.info("SCHEMA with name: {} was created", schemaName);
-        connection.close();
-
-
-//                defaultSchemaName = database.getDefaultSchemaName();
-//                database.setDefaultSchemaName(schemaName);
-//
-//                log.info("SCHEMA NAME!!!!! " + schemaName);
-//                statement.execute(String.format("SET search_path TO %s", schemaName));
-//
-//
-//                connection = dataSource.getConnection();
-//                connection.setSchema(schemaName);
-//                Database database2 = DatabaseFactory.getInstance().findCorrectDatabaseImplementation(new JdbcConnection(connection));
-//
-//                Liquibase liquibase = new Liquibase(LIQUIBASE_PATH, new ClassLoaderResourceAccessor(), database2);
-//
-//                liquibase.update(new Contexts(), new LabelExpression());
-//                database.setDefaultSchemaName(defaultSchemaName);
-      }
-
+    try (
+        Connection connection = provider.getConnection(tenantId);
+        Statement statement = connection.createStatement()
+    ) {
+      statement.execute(String.format("CREATE SCHEMA IF NOT EXISTS \"%s\"", schemaName));
+      log.info("SCHEMA with name: {} was created", schemaName);
       runLiquibaseScript(provider.getConnection(tenantId));
-
     } catch (Exception e) {
       log.error("TenantProvisioningService: Tenant subscription failed for {}.", tenantId, e);
       throw e;
     }
   }
 
-  private void runLiquibaseScript(Connection connection) {
-    try {
-      Database database = DatabaseFactory.getInstance().findCorrectDatabaseImplementation(new JdbcConnection(connection));
-      Liquibase liquibase = new Liquibase(LIQUIBASE_PATH, new ClassLoaderResourceAccessor(), database);
-      liquibase.update(new Contexts(), new LabelExpression());
-      log.info("Initial script for schema: {} was performed successfully", connection.getSchema());
-
-      connection.commit();
-      connection.close();
-    } catch (SQLException | LiquibaseException e) {
-      throw new RuntimeException(e);
-    }
+  private void runLiquibaseScript(Connection connection) throws LiquibaseException, SQLException {
+    Database database = DatabaseFactory.getInstance().findCorrectDatabaseImplementation(new JdbcConnection(connection));
+    Liquibase liquibase = new Liquibase(LIQUIBASE_PATH, new ClassLoaderResourceAccessor(), database);
+    liquibase.update(new Contexts(), new LabelExpression());
+    log.info("Initial script for schema: {} was performed successfully", connection.getSchema());
+    connection.commit();
   }
 
   public void unsubscribeTenant(final String tenantId) throws SQLException {
