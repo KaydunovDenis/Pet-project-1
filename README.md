@@ -175,6 +175,25 @@ env:
 </details>
 
 
+## Mutlitenancy testing using by Postman
+
+<details><summary> Expand </summary> 
+
+1. Prepare request like this [Using Postman for API Testing with XSUAA]
+> https://sbtp-app-rout.cfapps.us10-001.hana.ondemand.com
+2. Delete scope
+3. Change 'Grand Type' to 'Client credentials'
+4. Expand 'advanced' and create parameter x-zid, value is a subaccount tenant ID in CF:  
+![img_4.png](img_4.png)
+5. Get token for current tenant and use it on route of application
+   (You can parse your token by [JWT.io](https://jwt.io), and check "x-zid" section to make sure that you have correct tenantId):  
+> https://sbtp-app-rout.cfapps.us10-001.hana.ondemand.com/books
+
+
+   
+
+</details>
+
 ### Additional resources:
 1. [Fundamentals of Multitenancy in SAP BTP](https://blogs.sap.com/2022/08/27/fundamentals-of-multitenancy-in-sap-btp/)
 2. [Guide to Developing Cloud Applications with SAP Cloud Platform and Cloud Foundry](https://habr.com/ru/companies/sap/articles/350690/)
