@@ -1,0 +1,62 @@
+_schema-version: '3.1'
+ID: my-mta-project
+version: 0.1.0
+modules:
+  - name: sbtp
+    type: java
+    path: ./target/btpapp-1.0.jar
+    parameters:
+      memory: 1024M
+      buildpack: sap_java_buildpack
+      env:
+        JBP_CONFIG_JAVA_OPTS: "[java_opts: '-agentlib:jdwp=transport=dt_socket,address=8000,server=y,suspend=n,onjcmd=y']"
+        JBP_CONFIG_SAP_MACHINE_JDK: "[default_debug_agent_active: true]"
+        TARGET_RUNTIME: tomcat
+        JBP_CONFIG_COMPONENTS: "jres: ['com.sap.xs.java.buildpack.jdk.SAPMachineJDK']"
+    provides:
+      - name: sbtp-api
+        properties:
+          url: ${default-url}
+    requires:
+      - name: xsuaa-service
+      - name: saas-registry-instance
+      - name: postgres-instance
+      - name: myapplogs
+  - name: approuter
+    type: nodejs
+    path: approuter
+    parameters:
+      memory: 1024M
+      env:
+        destinations: >
+          [
+            {
+              "name": "sbtp",
+              "url": "https://sbtp-app-rout.cfapps.us10-001.hana.ondemand.com/",
+              "forwardAuthToken": true
+            }
+          ]
+        TENANT_HOST_PATTERN: "^(.*)-approuter-helloworld.cfapps.us10-001.hana.ondemand.com"
+    provides:
+      - name: approuter-api
+        properties:
+          url: ${default-url}
+    requires:
+      - name: xsuaa-service
+resources:
+  - name: xsuaa-service
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service: xsuaa
+  - name: saas-registry-instance
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service: saas-registry
+  - name: postgres-instance
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service: postgres
+  - name: myapplogs
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service: application-logs
