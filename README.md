@@ -72,7 +72,7 @@ Useful commands:
 > cf bind-service <app name> <postgres-instance> //connect two services
 
 > cf services //show services in your dev spase
-> ![img.png](img.png)  
+> ![img.png](img/img.png)  
 > cf apps //show downloaded apps
 > cf app <app name> //show statistics
 
@@ -118,7 +118,7 @@ where:
 * <app_name> is the name of your app in SAP BTP.  
 
 5. Access your service instance from Intelij Idea
-   ![img_2.png](img_2.png)
+   ![img_2.png](img/img_2.png)
 </details>
 
 
@@ -165,13 +165,13 @@ env:
 6. Start the debug process. Replace $JAVA_PID on your number, and <app_name>:
 > cf ssh sbtp -c "export JAVA_PID=`ps java pid=` && app/META-INF/.sap_java_buildpack/sap_machine_jdk/bin/jcmd $JAVA_PID VM.start_java_debugging"  
 
-![img_3.png](img_3.png)
+![img_3.png](img/img_3.png)
 
 7. Open SSH connection to debug process:
 > cf ssh -N -T -L 8000:localhost:8000 <app_name>
 
 8. Edit configuration for the debug process in Intellij IDEA:
-   ![img_1.png](img_1.png)
+   ![img_1.png](img/img_1.png)
 </details>
 
 
@@ -184,15 +184,17 @@ env:
 2. Delete scope
 3. Change 'Grand Type' to 'Client credentials'
 4. Expand 'advanced' and create parameter x-zid, value is a subaccount tenant ID in CF:  
-![img_4.png](img_4.png)
+![img_4.png](img/img_4.png)
 5. Get token for current tenant and use it on route of application
    (You can parse your token by [JWT.io](https://jwt.io), and check "x-zid" section to make sure that you have correct tenantId):  
 > https://sbtp-app-rout.cfapps.us10-001.hana.ondemand.com/books
 
 
-   
-
 </details>
+
+
+## [Migration from manifest.yaml to mtad.yaml](https://help.sap.com/docs/SAP_HANA_PLATFORM/4505d0bdaf4948449b7f7379d24d0f0d/33548a721e6548688605049792d55295.html)
+
 
 ### Additional resources:
 1. [Fundamentals of Multitenancy in SAP BTP](https://blogs.sap.com/2022/08/27/fundamentals-of-multitenancy-in-sap-btp/)
