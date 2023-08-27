@@ -31,19 +31,24 @@ public class HibernateConfig {
   public LocalContainerEntityManagerFactoryBean entityManagerFactory(DataSource dataSource,
                                                                      MultiTenantConnectionProvider multiTenantConnectionProvider,
                                                                      CurrentTenantIdentifierResolver tenantIdentifierResolver) {
+
     final LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
+    final Map<String, Object> jpaProps = createJpaProps(multiTenantConnectionProvider, tenantIdentifierResolver);
+    em.setJpaPropertyMap(jpaProps);
     em.setDataSource(dataSource);
     em.setPackagesToScan(HelloWorldApplication.class.getPackageName());
     em.setJpaVendorAdapter(this.jpaVendorAdapter());
+    return em;
+  }
 
+  private Map<String, Object> createJpaProps(MultiTenantConnectionProvider multiTenantConnectionProvider,
+                                             CurrentTenantIdentifierResolver tenantIdentifierResolver) {
     final Map<String, Object> jpaProperties = new HashMap<>();
     jpaProperties.put(MULTI_TENANT, MultiTenancyStrategy.SCHEMA);
     jpaProperties.put(MULTI_TENANT_CONNECTION_PROVIDER, multiTenantConnectionProvider);
     jpaProperties.put(MULTI_TENANT_IDENTIFIER_RESOLVER, tenantIdentifierResolver);
     jpaProperties.put(FORMAT_SQL, true);
-
-    em.setJpaPropertyMap(jpaProperties);
-    return em;
+    return jpaProperties;
   }
 
 }
