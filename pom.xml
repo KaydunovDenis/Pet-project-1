@@ -98,7 +98,7 @@
             <scope>test</scope>
         </dependency>
 
-        <!--Dependency for plugin Sapient AI: https://github.com/Sapient-AI/docs#mockito-libraries-->
+        <!--Dependency for plugin Sapient AI: https://github.com/Sapient-AI/docs-->
             <!-- Junit 5-->
         <dependency>
             <groupId>org.junit.jupiter</groupId>

@@ -195,6 +195,9 @@ env:
 
 ## [Migration from manifest.yaml to mtad.yaml](https://help.sap.com/docs/SAP_HANA_PLATFORM/4505d0bdaf4948449b7f7379d24d0f0d/33548a721e6548688605049792d55295.html)
 
+## Tests generation using plugin Sapient AI
+[Home page](https://plugins.jetbrains.com/plugin/21709-sapient-ai-test-coder)
+[Installation and Documentation](https://github.com/Sapient-AI/docs)
 
 ### Additional resources:
 1. [Fundamentals of Multitenancy in SAP BTP](https://blogs.sap.com/2022/08/27/fundamentals-of-multitenancy-in-sap-btp/)
