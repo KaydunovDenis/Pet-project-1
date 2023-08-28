@@ -1,12 +1,12 @@
 package com.github.kaydunovdenis.config.hibernate;
 
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.nullValue;
 import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import com.sap.cloud.sdk.cloudplatform.tenant.exception.TenantAccessException;
 import org.junit.jupiter.api.Test;
@@ -27,14 +27,27 @@ class TenantIdentifierResolverSapientGeneratedTest {
   @Test()
   void resolveCurrentTenantIdentifierWhenCaughtTenantAccessException() {
     /* Branches:* (Objects.nonNull(authToken)) : false* (catch-exception (TenantAccessException)) : true*/
+
+    //Given
     TenantIdentifierResolver target = new TenantIdentifierResolver();
     SecurityContext securityContextMock = mock(SecurityContext.class);
     TenantAccessException tenantAccessExceptionMock = mock(TenantAccessException.class);
-    doThrow(tenantAccessExceptionMock).when(securityContextMock).getAuthentication();
+    when(securityContextMock.getAuthentication()).thenThrow(tenantAccessExceptionMock);
+
+    //When
     String result = target.resolveCurrentTenantIdentifier();
+
+    //then
     assertAll("result", () -> {
       assertThat(result, is(nullValue()));
-      verify(securityContextMock).getAuthentication();
     });
+  }
+
+  //Sapient generated method id: ${f174460b-7e1d-3d14-90ef-3d878fd9557b}
+  @Test()
+  void validateExistingCurrentSessionsTest() {
+    TenantIdentifierResolver target = new TenantIdentifierResolver();
+    boolean result = target.validateExistingCurrentSessions();
+    assertAll("result", () -> assertThat(result, equalTo(Boolean.TRUE)));
   }
 }

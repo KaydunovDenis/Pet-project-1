@@ -2,14 +2,13 @@ package com.github.kaydunovdenis.config.hibernate;
 
 import com.sap.cloud.sdk.cloudplatform.tenant.exception.TenantAccessException;
 import com.sap.cloud.security.xsuaa.token.AuthenticationToken;
+import java.util.Map;
+import java.util.Objects;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.context.spi.CurrentTenantIdentifierResolver;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
-
-import java.util.Map;
-import java.util.Objects;
 
 @Slf4j
 @Component
@@ -29,12 +28,10 @@ public class TenantIdentifierResolver implements CurrentTenantIdentifierResolver
           return isValidTenant(tenant) ? tenant : defaultTenant;
         }
       }
-//            return TenantAccessor.getCurrentTenant().getTenantId();
-      return defaultTenant;
     } catch (TenantAccessException e) {
       log.warn("Tenant not found", e);
-      return defaultTenant;
     }
+    return defaultTenant;
   }
 
   private static boolean isValidTenant(String tenant) {

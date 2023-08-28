@@ -2,6 +2,7 @@ package com.github.kaydunovdenis.config.hibernate;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
@@ -15,6 +16,7 @@ import org.hibernate.engine.jdbc.connections.spi.MultiTenantConnectionProvider;
 import org.junit.jupiter.api.Test;
 import org.springframework.orm.jpa.JpaVendorAdapter;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
+import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 
 class HibernateConfigSapientGeneratedTest {
 
@@ -56,5 +58,13 @@ class HibernateConfigSapientGeneratedTest {
     jpaProperties.put("hibernate.tenant_identifier_resolver", currentTenantIdentifierResolverMock);
     jpaProperties.put("hibernate.format_sql", true);
     return jpaProperties;
+  }
+
+  //Sapient generated method id: ${e17d2857-9d44-3ba0-8f40-645f8c197452}
+  @Test()
+  void jpaVendorAdapterTest() {
+    HibernateConfig target = new HibernateConfig();
+    JpaVendorAdapter result = target.jpaVendorAdapter();
+    assertTrue(result instanceof HibernateJpaVendorAdapter);
   }
 }

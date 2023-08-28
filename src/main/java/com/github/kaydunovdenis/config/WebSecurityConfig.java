@@ -42,7 +42,7 @@ public class WebSecurityConfig {
    * Customizes how GrantedAuthority are derived from a Jwt
    * &#064;returns  jwt converter
    */
-  Converter<Jwt, AbstractAuthenticationToken> getJwtAuthoritiesConverter() {
+  public Converter<Jwt, AbstractAuthenticationToken> getJwtAuthoritiesConverter() {
     TokenAuthenticationConverter converter = new TokenAuthenticationConverter(xsuaaServiceConfiguration);
     converter.setLocalScopeAsAuthorities(true);
     return converter;
