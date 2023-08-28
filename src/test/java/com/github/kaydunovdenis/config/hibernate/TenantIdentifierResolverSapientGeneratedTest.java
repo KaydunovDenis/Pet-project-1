@@ -38,9 +38,7 @@ class TenantIdentifierResolverSapientGeneratedTest {
     String result = target.resolveCurrentTenantIdentifier();
 
     //then
-    assertAll("result", () -> {
-      assertThat(result, is(nullValue()));
-    });
+    assertAll("result", () -> assertThat(result, is(nullValue())));
   }
 
   //Sapient generated method id: ${f174460b-7e1d-3d14-90ef-3d878fd9557b}

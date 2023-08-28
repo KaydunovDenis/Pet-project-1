@@ -24,8 +24,7 @@ import org.springframework.security.web.SecurityFilterChain;
 
 class WebSecurityConfigSapientGeneratedTest {
 
-  @Mock(name = "xsuaaServiceConfiguration")
-  private XsuaaServiceConfiguration xsuaaServiceConfigurationMock;
+
 
   private AutoCloseable autoCloseableMocks;
 

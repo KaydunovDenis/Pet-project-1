@@ -62,9 +62,7 @@ class BookServiceImplSapientGeneratedTest {
     doReturn(Optional.empty()).when(bookRepositoryMock).findById(1L);
     BookDto bookDtoMock = mock(BookDto.class);
     RuntimeException runtimeException = new RuntimeException("Book with id '1' is not found");
-    final RuntimeException result = assertThrows(RuntimeException.class, () -> {
-      target.update(bookDtoMock, 1L);
-    });
+    final RuntimeException result = assertThrows(RuntimeException.class, () -> target.update(bookDtoMock, 1L));
     assertAll("result", () -> {
       assertThat(result, is(notNullValue()));
       assertThat(result.getMessage(), equalTo(runtimeException.getMessage()));
@@ -79,9 +77,7 @@ class BookServiceImplSapientGeneratedTest {
     BookServiceImpl target = new BookServiceImpl(bookRepositoryMock);
     doReturn(Optional.empty()).when(bookRepositoryMock).findById(1L);
     RuntimeException runtimeException = new RuntimeException("Book with id '1' is not found");
-    final RuntimeException result = assertThrows(RuntimeException.class, () -> {
-      target.getBook(1L);
-    });
+    final RuntimeException result = assertThrows(RuntimeException.class, () -> target.getBook(1L));
     assertAll("result", () -> {
       assertThat(result, is(notNullValue()));
       assertThat(result.getMessage(), equalTo(runtimeException.getMessage()));
